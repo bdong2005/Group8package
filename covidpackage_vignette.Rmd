@@ -1,0 +1,118 @@
+---
+title: "COVID580"
+author: 
+date: 
+output:
+  pdf_document:
+    toc: yes
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction 
+
+## Group 8 Members 
+
+Isaiah Casarez, Brian Dong, Emma de la Torre, Yuyan Wang
+
+Goal of our package 
+
+We understand that because of the Covid-19 pandemic, large amounts of dated data was collected. Having all this information is useful, however interpreting it may be cumbersome. The purpose of our functions is to provide summary statistics for dated data sets as well as be able to specify specific date ranges to generate summary statistics for those ranges as well. 
+
+## Included Data
+
+1. Covid_SD - Contains collected data regarding the coronavirus pandemic for San Diego county from 2020 to 2021. Columns include Date, Tests, Positive (Cases), Hospitalized, ICU, Deaths, New Cases, Age 0-9, Age 10-19, Age 20-29, Age 30-39, Age 40-49, Age 50-59, Age 60-69, Age 70-79, Age 80+, Age Unknown, Gender Female, Gender Male, Gender Unknown, New Tests, and Rolling Average Percentage of Positive Cases among Tests. 
+
+## Included Functions: 
+
+1. Date Separator 
+
+2. Summary Table 
+
+3. Pairs Plot 
+
+4. Scatter Plot 
+
+5. 2D Histogram Plot 
+
+
+# Date Separator 
+
+## Motivation 
+`before_after()` was created so that you are able to specify a specific date in the format of Year-Month-Date and see the data set either before or after that date. `double_dates()` was also created to be able to view data in between two dates. Manually sub-setting in R for specify dates can be tedious, so this function speeds up that process. 
+
+Embedded within the previous date separation functions `covid_date_format()` ensures that the data that is passed through is in the correct format and can be correctly read. 
+
+## Example
+
+```{r, eval = FALSE}
+
+head(before_after(direction = "leq",date = "2020-03-27"),5)
+
+head(double_dates(earlier_date = "2020-08-21",later_date = "2021-09-21"),5)
+
+```
+
+
+# Summary Table 
+
+## Motivation: 
+Base R just allows the use of the `summary()` function, but more information can be provided. 
+
+By using either the `before_after()` or `double_dates()` function as before, as well as use the `sum_stats()` function, information for each variable within a certain date range is provided such as the mean, standard deviation, minimum, 25th and 75th percentiles, and the maximum. 
+
+## Example
+
+```{r, eval = FALSE}
+
+sum_stats(before_after(direction = "leq",date = "2020-03-27"))
+
+sum_stats(double_dates(earlier_date = "2020-08-21",later_date = "2021-09-21"))
+
+```
+
+
+# Pairs Plot 
+
+## Goal of Pairs Plot 
+`pair_plot()` allows us to see the correlation between columns Tests, Positives, Hospitalized, ICU, Deaths, and New Cases from any date specified, once again using the date specification function. This makes looking at dated data sets to be more manageable rather than generating a large correlation plot for an entire dated data set. 
+
+## Example
+Here is an example of looking at the correlation of these variables for cases between August 21, 2020 and September 21, 2021. 
+
+```{r, eval = FALSE}
+
+pair_plots(double_dates(earlier_date = "2020-08-21",later_date = "2021-09-21"))
+
+```
+
+# Scatter Plot 
+
+## Goal of Scatter Plot 
+By using `age_group_plots()` in tandem with the date separator function mentioned previously, scatter plots by age group and hospitalization can be shown. This aims to provide more information on whether certain age groups are susceptible to hospitalization in a certain date range. 
+
+## Example 
+
+
+```{r, eval = FALSE}
+
+age_group_plots(double_dates(earlier_date = "2020-08-21",later_date = "2021-06-21"))
+
+```
+
+
+# 2D Histogram
+
+## Goal of Histogram 
+Provide general summary of every column within data set with respect to the date specified, this aims to give a general idea of what the data set looks like based on time. 
+
+## Example
+
+```{r, eval = FALSE}
+
+two_d_histo(double_dates(earlier_date = "2020-08-21",later_date = "2021-06-21"))
+
+```
